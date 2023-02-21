@@ -1,3 +1,3 @@
 # Sales
-## Introducción
-Este es el proyecto de ejemplo de un carrito de compras
+## Introduction
+This is the example project of a shopping cart
