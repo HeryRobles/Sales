@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Sales.Shared.Entities;
 
-namespace Sales.API.Migrations
+namespace Sales.API.Model
 {
     public class ApplicationDbContext : DbContext
     {
