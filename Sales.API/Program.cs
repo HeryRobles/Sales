@@ -1,5 +1,5 @@
 using Microsoft.EntityFrameworkCore;
-using Sales.API.Migrations;
+
 
 var builder = WebApplication.CreateBuilder(args);
 

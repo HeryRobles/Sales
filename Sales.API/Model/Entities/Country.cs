@@ -1,12 +1,15 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 
-namespace Sales.Shared.Entities
+namespace Sales.API.Model.Entities
 {
     public class Country
     {
         public int Id { get; set; }
 
-        [Required]
+        [Display(Name = "País")]
+        [Required(ErrorMessage = "El campo {0} es obligatorio")]
+        [MaxLength(100, ErrorMessage = "El campo {0} no puede tener más de {1} caractéres")]
         public string Name { get; set; }
     }
 }
