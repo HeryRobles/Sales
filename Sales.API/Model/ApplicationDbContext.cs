@@ -12,11 +12,11 @@ namespace Sales.API.Model
 
         public DbSet<Country> Countries { get; set; }
 
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {
-            base.OnModelCreating(modelBuilder);
-            modelBuilder.Entity<Country>().HasIndex(x => x.Name).IsUnique();  
-        }
+        //protected override void OnModelCreating(ModelBuilder modelBuilder)
+        //{
+        //    base.OnModelCreating(modelBuilder);
+        //    modelBuilder.Entity<Country>().HasIndex(x => x.Name).IsUnique();  
+        //}
 
     }
 
