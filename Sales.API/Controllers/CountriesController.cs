@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Sales.API.Model;
 using Sales.API.Model.Entities;
 using Sales.Shared.DTOS;
@@ -14,6 +15,12 @@ namespace Sales.API.Controllers
         {
             _context = context; 
 
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetAsync()
+        {
+            return Ok(await _context.Countries.ToListAsync());
         }
 
         [HttpPost]
