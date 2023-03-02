@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Sales.API.Model;
+using Sales.API.Model.Entities;
 using Sales.Shared.DTOS;
 
 namespace Sales.API.Controllers
@@ -18,7 +19,7 @@ namespace Sales.API.Controllers
         [HttpPost]
         public async Task<ActionResult> Add([FromBody] CountryDto countryDto)
         {
-            var country = new CountryDto();
+            var country = new Country();
             country.Name = countryDto.Name; 
 
             _context.Add(country);
