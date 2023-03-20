@@ -4,12 +4,9 @@
 
 <h3>Países</h3>
 
-@if (Countries is null)
-{
-    <p>Cargando...</p>
-} else
-{
-    <table class="table table-striped">
+<GenericList MyList = "Countries">
+    <Body>
+        <table class="table table-striped">
         <thead>
             <tr>
                 <th></th>
@@ -32,7 +29,10 @@
         </tbody>
     </table>
 
-}
+    </Body>
+
+</GenericList>
+
 
 @code {
     public List<Country> Countries { get; set; }
