@@ -63,7 +63,7 @@ namespace SalesWeb.Repositories
 
         }
 
-        public async Task<HttpResponseWrapper<object>> Put<T>(string url, Task model)
+        public async Task<HttpResponseWrapper<object>> Put<T>(string url, T model)
         {
             var messageJSON = JsonSerializer.Serialize(model);
             var messageContent = new StringContent(messageJSON, Encoding.UTF8, "application/json");

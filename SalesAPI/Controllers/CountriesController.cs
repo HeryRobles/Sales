@@ -2,7 +2,6 @@
 using Microsoft.EntityFrameworkCore;
 using SalesAPI.Data;
 using SalesShared.Entities;
-using System.Runtime.CompilerServices;
 
 namespace SalesAPI.Controllers
 {
@@ -15,32 +14,32 @@ namespace SalesAPI.Controllers
 
         public CountriesController(ApplicationDbContext context)
         {
-            _context = context; 
+            _context = context;
 
         }
         [HttpGet]
-        public async Task<IActionResult> GetAsync() 
+        public async Task<IActionResult> GetAsync()
         {
             return Ok(await _context.Countries.ToListAsync());
         }
 
-        [HttpGet("{id:int}")]  
+        [HttpGet("{id:int}")]
         public async Task<IActionResult> GetAsync(int id)
         {
             var country = await _context.Countries.FirstOrDefaultAsync(x => x.Id == id);
-            if (country == null) 
+            if (country == null)
             {
-                return NotFound();  
+                return NotFound();
             }
             return Ok(country);
         }
-        
+
         [HttpPost]
         public async Task<ActionResult> PostAsync(Country country)
         {
             _context.Add(country);
-            await _context.SaveChangesAsync();  
-            return Ok(country);    
+            await _context.SaveChangesAsync();
+            return Ok(country);
 
         }
 
