@@ -3,17 +3,17 @@ using Microsoft.EntityFrameworkCore;
 using SalesAPI.Data;
 using SalesAPI.Helppers;
 using SalesShared.DTOs;
-using SalesShared.Entities;
+using SalesShared.Entities.Productos;
 
-namespace SalesAPI.Controllers
+namespace SalesAPI.Controllers.Productos
 {
     [ApiController]
-    [Route("api/countries")]
-    public class CountriesController : ControllerBase
+    [Route("api/productos")]
+    public class ProductosController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
 
-        public CountriesController(ApplicationDbContext context)
+        public ProductosController(ApplicationDbContext context)
         {
             _context = context;
 
@@ -24,23 +24,23 @@ namespace SalesAPI.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAsync([FromQuery] PaginacionDTO paginacion)
         {
-            var queryable = _context.Countries
+            var queryable = _context.Productos
                 .AsQueryable();
 
             if (!string.IsNullOrWhiteSpace(paginacion.Filter))
             {
-                queryable = queryable.Where(x => x.Name!.ToLower().Contains(paginacion.Filter.ToLower()));
+                queryable = queryable.Where(x => x.Nombre!.ToLower().Contains(paginacion.Filter.ToLower()));
             }
 
             return Ok(await queryable
-                .OrderBy(x => x.Name)
+                .OrderBy(x => x.Nombre)
                 .Paginar(paginacion)
                 .ToListAsync());
         }
         [HttpGet("totalPages")]
         public async Task<ActionResult> GetPages([FromQuery] PaginacionDTO paginacion)
         {
-            var queryable = _context.Countries.AsQueryable();
+            var queryable = _context.Productos.AsQueryable();
             double count = await queryable.CountAsync();
             double totalPages = Math.Ceiling(count / paginacion.RecordsNumber);
             return Ok(totalPages);
@@ -50,54 +50,41 @@ namespace SalesAPI.Controllers
         [HttpGet("{id:int}")]
         public async Task<IActionResult> GetAsync(int id)
         {
-            var country = await _context.Countries.FirstOrDefaultAsync(x => x.Id == id);
-            if (country == null)
+            var producto = await _context.Productos.FirstOrDefaultAsync(x => x.Id == id);
+            if (producto == null)
             {
                 return NotFound();
             }
-            return Ok(country);
+            return Ok(producto);
         }
 
         [HttpPost]
-        public async Task<ActionResult> PostAsync(Country country)
+        public async Task<ActionResult> PostAsync(Producto producto)
         {
-
-            try
-            {
-                _context.Countries.Add(country);
-                await _context.SaveChangesAsync();
-                return Ok(country);
-            }
-            catch (DbUpdateException dbUpdateException)
-            {
-                if (dbUpdateException.InnerException!.Message.Contains("duplicate"))
-                {
-                    return BadRequest("Ya existe un país con ese nombre");
-                }
-
-                return BadRequest(dbUpdateException.Message);
-            }
-            catch (Exception exception) { return BadRequest(exception.Message); }
+            _context.Productos.Add(producto);
+            await _context.SaveChangesAsync();
+            return Ok(producto);
+           
         }
 
         [HttpPut]
-        public async Task<ActionResult> PutAsync(Country country)
+        public async Task<ActionResult> PutAsync(Producto producto)
         {
-            _context.Update(country);
+            _context.Update(producto);
             await _context.SaveChangesAsync();
-            return Ok(country);
+            return Ok(producto);
 
         }
 
         [HttpDelete("{id:int}")]
         public async Task<IActionResult> DeleteAsync(int id)
         {
-            var country = await _context.Countries.FirstOrDefaultAsync(x => x.Id == id);
-            if (country == null)
+            var producto = await _context.Productos.FirstOrDefaultAsync(x => x.Id == id);
+            if (producto == null)
             {
                 return NotFound();
             }
-            _context.Remove(country);
+            _context.Remove(producto);
             await _context.SaveChangesAsync();
             return NoContent();
         }

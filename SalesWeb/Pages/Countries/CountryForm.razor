@@ -9,12 +9,11 @@
         <div>
             <InputText class="form-control" @bind-Value="@Country.Name" />
             <ValidationMessage For="@(() => Country.Name)" />
-            
         </div>
 
     </div>
-    <button class="btn btn-primary" type="submit">Guardar Cambios</button>
-    <button class="btn btn-success" @onclick="ReturnAction">Regresar</button>
+    <button class="btn btn-info" type="submit">Guardar Cambios</button>
+    <button class="btn btn-warning" @onclick="ReturnAction">Regresar</button>
 
 
 </EditForm>
