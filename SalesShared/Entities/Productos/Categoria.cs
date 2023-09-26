@@ -9,13 +9,13 @@ namespace SalesShared.Entities.Productos
         [Display(Name = "Categoría")]
         [MaxLength(100, ErrorMessage = "El campo {0} debe tener máximo {1} caractéres.")]
         [Required(ErrorMessage = "El campo {0} es obligatorio.")]
-        public string NombreCategoria { get; set; } = null!;
+        public string Nombre { get; set; } = null!;
 
-        public ICollection<ClasificacionProducto>? ClasificacionProductos { get; set; }
+        public ICollection<CategoriaProducto>? CategoriaProductos { get; set; }
 
 
         //Este atributo nos permite tener un contador de los productos que se encuentran dentro de la categoría
-        [Display(Name = "Clasificación")]
-        public int ClasificacionProductosContador => ClasificacionProductos == null ? 0 : ClasificacionProductos.Count;
+        [Display(Name = "Productos")]
+        public int CategoriaProductosNumber => CategoriaProductos == null ? 0 : CategoriaProductos.Count;
     }
 }

@@ -34,14 +34,40 @@ namespace SalesShared.Entities.Productos
         [Required(ErrorMessage = "El campo {0} es obligatorio.")]
         public float Stock { get; set; }
 
+        public ICollection<CategoriaProducto>? CategoriaProductos { get; set; }
+
+        [Display(Name = "Categorías")]
+        public int CategoriaProductosNumber => CategoriaProductos == null ? 0 : CategoriaProductos.Count;
        
-        public int ClasificacionProductoId { get; set; }
-        public ClasificacionProducto? ClasificacionProducto { get; set; }
-
-        public ICollection<ProductoImg>? ProductoImagenes { get; set; }
-
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+//public ICollection<ProductoImg>? ProductImages { get; set; }
+
+//[Display(Name = "Imágenes")]
+//public int ProductImagesNumber => ProductImages == null ? 0 : ProductImages.Count;
+
+//[Display(Name = "Imagén")]
+//public string MainImage => ProductImages == null ? string.Empty : ProductImages.FirstOrDefault()!.Imagen;
+
+//public ICollection<TemporalSale>? TemporalSales { get; set; }
+
+//public ICollection<SaleDetail>? SaleDetails { get; set; }
+
+
+
+
 
 
 //[Display(Name = "Clasificacion")]

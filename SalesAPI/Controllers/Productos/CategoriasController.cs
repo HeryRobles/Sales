@@ -26,31 +26,20 @@ namespace SalesAPI.Controllers.Productos
         public async Task<IActionResult> GetAsync([FromQuery] PaginacionDTO paginacion)
         {
             var queryable = _context.CategoriasProductos
-                .Include(x => x.ClasificacionProductos)
                 .AsQueryable();
 
             if (!string.IsNullOrWhiteSpace(paginacion.Filter))
             {
-                queryable = queryable.Where(x => x.NombreCategoria!.ToLower().Contains(paginacion.Filter.ToLower()));
+                queryable = queryable.Where(x => x.Nombre!.ToLower().Contains(paginacion.Filter.ToLower()));
             }
 
             return Ok(await queryable
-                .OrderBy(x => x.NombreCategoria)
+                .OrderBy(x => x.Nombre)
                 .Paginar(paginacion)
                 .ToListAsync());
         }
 
-        [HttpGet("full")]
-        public async Task<ActionResult> GetFullAsync()
-        {
-            var categorias = await _context.CategoriasProductos
-            .Include(x => x.ClasificacionProductos!)
-            .ThenInclude(x => x.Productos)
-            .ToListAsync();
-
-            return Ok(categorias);
-        }
-
+        
         [HttpGet("totalPages")]
         public async Task<ActionResult> GetPages([FromQuery] PaginacionDTO paginacion)
         {
@@ -65,22 +54,20 @@ namespace SalesAPI.Controllers.Productos
         public async Task<IActionResult> GetAsync(int id)
         {
             var categoria = await _context.CategoriasProductos
-                .Include(x => x.ClasificacionProductos)
                 .FirstOrDefaultAsync(x => x.Id == id);
             if (categoria == null)
             {
                 return NotFound();
-            }1
+            }
             return Ok(categoria);
         }
 
         [HttpPost]
         public async Task<ActionResult> PostAsync(Categoria category)
         {
-
+            _context.Add(category);
             try
             {
-                _context.CategoriasProductos.Add(category);
                 await _context.SaveChangesAsync();
                 return Ok(category);
             }
@@ -90,8 +77,10 @@ namespace SalesAPI.Controllers.Productos
                 {
                     return BadRequest("Ya existe una categoría con ese nombre");
                 }
-
-                return BadRequest(dbUpdateException.Message);
+                else
+                {
+                    return BadRequest(dbUpdateException.Message);
+                }
             }
             catch (Exception exception) { return BadRequest(exception.Message); }
         }
@@ -100,9 +89,26 @@ namespace SalesAPI.Controllers.Productos
         public async Task<ActionResult> PutAsync(Categoria category)
         {
             _context.Update(category);
-            await _context.SaveChangesAsync();
-            return Ok(category);
-
+            try
+            {
+                await _context.SaveChangesAsync();
+                return Ok(category);
+            }
+            catch (DbUpdateException dbUpdateException)
+            {
+                if (dbUpdateException.InnerException!.Message.Contains("duplicate"))
+                {
+                    return BadRequest("Ya existe un registro con el mismo nombre.");
+                }
+                else
+                {
+                    return BadRequest(dbUpdateException.InnerException.Message);
+                }
+            }
+            catch (Exception exception)
+            {
+                return BadRequest(exception.Message);
+            }
         }
 
         [HttpDelete("{id:int}")]

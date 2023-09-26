@@ -11,6 +11,7 @@ namespace SalesShared.Entities.Productos
 
         public int ProductoId { get; set; }
 
+
         [Display(Name = "Imagen")]
         public string Imagen { get; set; } = null!;
     }
